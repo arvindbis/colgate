@@ -3,6 +3,7 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 /**
  * Created by QP-DEV on 4/3/2015.
@@ -28,7 +29,15 @@ public class Luncher extends JFrame {
         fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
         this.setJMenuBar(menuBar);
-        save = new JMenuItem("save");
+        save = new JMenuItem("Open");
+        save.addActionListener(new java.awt.event.ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openPerspectives(e);
+            }
+        });
+        fileMenu.add(save);
+        save = new JMenuItem("Save");
         save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 savePerspectives(evt);
@@ -38,9 +47,15 @@ public class Luncher extends JFrame {
     }
 
     private void savePerspectives(ActionEvent evt) {
-        if("save".equals(evt.getActionCommand())){
-            System.out.println("Save Button is pressed");
-        }
+        System.out.println("Save Button is pressed");
+        JFileChooser openFile = new JFileChooser();
+        openFile.showOpenDialog(null);
+        System.out.println(openFile.getSelectedFile().getPath());
+        File image = openFile.getSelectedFile();
+
+    }
+    private void openPerspectives(ActionEvent evt){
+        System.out.println("Open Button is pressed");
     }
 
 }
