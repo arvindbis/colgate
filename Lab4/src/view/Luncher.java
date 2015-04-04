@@ -50,6 +50,10 @@ public class Luncher extends JFrame {
     }
 
     private void savePerspectives(ActionEvent evt) {
+
+    }
+
+    private void openPerspectives(ActionEvent evt) {
         JFileChooser openFile = new JFileChooser();
         openFile.showOpenDialog(null);
         if (openFile.getSelectedFile().getPath().endsWith(".jpg") || openFile.getSelectedFile().getPath().endsWith(".jpeg") || openFile.getSelectedFile().getPath().endsWith(".png")) {
@@ -67,11 +71,6 @@ public class Luncher extends JFrame {
             errorLabel.setText("Selected File is not a Image.");
             mainFrame.add(errorLabel);
         }
-
-    }
-
-    private void openPerspectives(ActionEvent evt) {
-        System.out.println("Open Button is pressed");
     }
 }
 
