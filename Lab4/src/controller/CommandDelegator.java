@@ -1,11 +1,10 @@
 package controller;
 
 
-public interface CommandDelegator {
-    void executeOperation();
-    boolean performUndo();
-    boolean performRedo();
-    boolean performCopy();
-    boolean performPaste();
-
+public abstract class CommandDelegator {
+    protected abstract void executeOperation();
+    protected abstract boolean performUndo();
+    protected abstract boolean performRedo();
+    protected abstract boolean performCopy();
+    protected abstract boolean performPaste();
 }
