@@ -1,36 +1,41 @@
 package view;
 
+import model.ImagePanel;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by QP-DEV on 4/3/2015.
  */
 public class Luncher extends JFrame {
-
-    private JPanel imageHolder,perspectiveHolder1,getPerspectiveHolder2;
+    private JFrame mainFrame;
+    private JPanel imageHolder, perspectiveHolder1, getPerspectiveHolder2;
     private JMenuBar menuBar;
     private JMenu fileMenu;
     private JMenuItem save;
-    public Luncher(String name){
+    private JLabel errorLabel;
+
+    public Luncher(String name) {
         initalizeView(name);
     }
 
-    private void initalizeView(String name){
-        new JFrame();
-        this.setTitle(name);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setVisible(true);
-        this.setSize(800, 600);
-        this.setLocationRelativeTo(null);
+    private void initalizeView(String name) {
+        mainFrame = new JFrame();
+        mainFrame.setTitle(name);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.setVisible(true);
+        mainFrame.setSize(800, 600);
+        mainFrame.setLocationRelativeTo(null);
         menuBar = new JMenuBar();
         fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
-        this.setJMenuBar(menuBar);
+        mainFrame.setJMenuBar(menuBar);
         save = new JMenuItem("Open");
-        save.addActionListener(new java.awt.event.ActionListener(){
+        save.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 openPerspectives(e);
@@ -47,15 +52,28 @@ public class Luncher extends JFrame {
     }
 
     private void savePerspectives(ActionEvent evt) {
-        System.out.println("Save Button is pressed");
         JFileChooser openFile = new JFileChooser();
         openFile.showOpenDialog(null);
-        System.out.println(openFile.getSelectedFile().getPath());
-        File image = openFile.getSelectedFile();
+        if (openFile.getSelectedFile().getPath().endsWith(".jpg") || openFile.getSelectedFile().getPath().endsWith(".jpeg") || openFile.getSelectedFile().getPath().endsWith(".png")) {
+            ImagePanel img = null;
+            try {
+                img = new ImagePanel(ImageIO.read(new File(openFile.getSelectedFile().getAbsolutePath())));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            img.paintComponent(img.getImg().getGraphics());
+            mainFrame.add(img);
+        } else {
+            if (errorLabel == null)
+                errorLabel = new JLabel();
+            errorLabel.setText("Selected File is not a Image.");
+            mainFrame.add(errorLabel);
+        }
 
     }
-    private void openPerspectives(ActionEvent evt){
+
+    private void openPerspectives(ActionEvent evt) {
         System.out.println("Open Button is pressed");
     }
-
 }
+
