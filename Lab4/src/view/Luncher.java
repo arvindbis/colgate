@@ -8,9 +8,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by QP-DEV on 4/3/2015.
- */
+
 public class Luncher extends JFrame {
     private JFrame mainFrame;
     private JPanel imageHolder, perspectiveHolder1, getPerspectiveHolder2;

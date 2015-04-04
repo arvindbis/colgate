@@ -3,9 +3,6 @@ package model;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by QP-DEV on 4/3/2015.
- */
 public class ImagePanel extends JPanel {
     private Image img;
 
