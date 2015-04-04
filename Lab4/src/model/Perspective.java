@@ -1,5 +1,6 @@
 package model;
 
-public class Perspective {
-
+public abstract class Perspective {
+    private int width;
+    private int height;
 }

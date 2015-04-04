@@ -5,6 +5,7 @@ import model.ImagePanel;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -12,12 +13,14 @@ import java.io.IOException;
 
 public class Luncher extends JFrame {
     private JFrame mainFrame;
-    private JPanel perspectiveHolder1, getPerspectiveHolder2;
+    private JPanel perspectiveHolder, imageHolder;
     private JMenuBar menuBar;
     private JMenu fileMenu;
     private JMenuItem save;
     private JLabel errorLabel;
     private ImagePanel img;
+    private JFileChooser opener,saver;
+    JSplitPane containerSeperator,subContainerSeperator;
 
     public Luncher(String name) {
         initalizeView(name);
@@ -30,6 +33,8 @@ public class Luncher extends JFrame {
         mainFrame.setVisible(true);
         mainFrame.setSize(800, 600);
         mainFrame.setLocationRelativeTo(null);
+        perspectiveHolder = new JPanel();
+        imageHolder = new JPanel();
         menuBar = new JMenuBar();
         fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
@@ -48,40 +53,49 @@ public class Luncher extends JFrame {
                 savePerspectives(evt);
             }
         });
+        containerSeperator = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        containerSeperator.setResizeWeight(0.7);
+        containerSeperator.setEnabled(false);
+        containerSeperator.setDividerSize(0);
+        containerSeperator.add(imageHolder);
+        containerSeperator.add(perspectiveHolder);
         fileMenu.add(save);
+        mainFrame.add(containerSeperator);
     }
 
     private void savePerspectives(ActionEvent evt) {
-
+        if(saver == null) {
+            saver = new JFileChooser();
+            saver.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        }
+        saver.showOpenDialog(null);
     }
 
     private void openPerspectives(ActionEvent evt) {
-        JFileChooser openFile = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "JPG & GIF Images", "jpg", "gif");
-        openFile.setFileFilter(filter);
-        openFile.showOpenDialog(null);
-
-        if (openFile.getSelectedFile().getPath().endsWith(".jpg") || openFile.getSelectedFile().getPath().endsWith(".jpeg") || openFile.getSelectedFile().getPath().endsWith(".png")) {
+        if(opener == null) {
+            opener = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "JPG & GIF Images", "jpg", "gif");
+            opener.setFileFilter(filter);
+        }
+        int selection = opener.showOpenDialog(null);
+        if(selection == JFileChooser.APPROVE_OPTION)
+        if (opener.getSelectedFile().getPath() != null && opener.getSelectedFile().getPath().endsWith(".jpg") || opener.getSelectedFile().getPath().endsWith(".jpeg") || opener.getSelectedFile().getPath().endsWith(".png")) {
             if(img != null) {
-                mainFrame.getContentPane().remove(img);
-                mainFrame.invalidate();
+                imageHolder.remove(img);
+                imageHolder.invalidate();
             }
             try {
-
-                img = new ImagePanel(ImageIO.read(new File(openFile.getSelectedFile().getAbsolutePath())));
+                img = new ImagePanel(ImageIO.read(new File(opener.getSelectedFile().getAbsolutePath())));
             } catch (IOException e) {
                 e.printStackTrace();
             }
             img.paintComponent(img.getImg().getGraphics());
-            mainFrame.add(img);
-            mainFrame.validate();
-            mainFrame.repaint();
+            imageHolder.add(img);
+            imageHolder.validate();
+            imageHolder.repaint();
         } else {
-            if (errorLabel == null)
-                errorLabel = new JLabel();
-            errorLabel.setText("Selected File is not a Image.");
-            mainFrame.add(errorLabel);
+            JOptionPane.showMessageDialog(imageHolder, "This is not a valid Image File", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
