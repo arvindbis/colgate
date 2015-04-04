@@ -2,8 +2,10 @@ package model;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Observable;
+import java.util.Observer;
 
-public class ImagePanel extends JPanel {
+public class ImagePanel extends JPanel implements Observer {
     private Image img;
 
     public ImagePanel( Image img){
@@ -25,5 +27,10 @@ public class ImagePanel extends JPanel {
 
     public void setImg(Image img) {
         this.img = img;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
     }
 }
