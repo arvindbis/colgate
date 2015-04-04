@@ -4,6 +4,7 @@ import model.ImagePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -11,11 +12,12 @@ import java.io.IOException;
 
 public class Luncher extends JFrame {
     private JFrame mainFrame;
-    private JPanel imageHolder, perspectiveHolder1, getPerspectiveHolder2;
+    private JPanel perspectiveHolder1, getPerspectiveHolder2;
     private JMenuBar menuBar;
     private JMenu fileMenu;
     private JMenuItem save;
     private JLabel errorLabel;
+    private ImagePanel img;
 
     public Luncher(String name) {
         initalizeView(name);
@@ -55,16 +57,26 @@ public class Luncher extends JFrame {
 
     private void openPerspectives(ActionEvent evt) {
         JFileChooser openFile = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "JPG & GIF Images", "jpg", "gif");
+        openFile.setFileFilter(filter);
         openFile.showOpenDialog(null);
+
         if (openFile.getSelectedFile().getPath().endsWith(".jpg") || openFile.getSelectedFile().getPath().endsWith(".jpeg") || openFile.getSelectedFile().getPath().endsWith(".png")) {
-            ImagePanel img = null;
+            if(img != null) {
+                mainFrame.getContentPane().remove(img);
+                mainFrame.invalidate();
+            }
             try {
+
                 img = new ImagePanel(ImageIO.read(new File(openFile.getSelectedFile().getAbsolutePath())));
             } catch (IOException e) {
                 e.printStackTrace();
             }
             img.paintComponent(img.getImg().getGraphics());
             mainFrame.add(img);
+            mainFrame.validate();
+            mainFrame.repaint();
         } else {
             if (errorLabel == null)
                 errorLabel = new JLabel();
