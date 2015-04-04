@@ -1,6 +1,6 @@
 package controller;
 
-public class ZoomWorker extends CommandDelegator {
+public class ZoomWorker implements CommandDelegator {
     @Override
     public void executeOperation() {
 

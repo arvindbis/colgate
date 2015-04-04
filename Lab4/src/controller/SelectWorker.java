@@ -3,29 +3,29 @@ package controller;
 /**
  * Responsible for selection of section and crop the selected image.
  */
-public class SelectWorker extends CommandDelegator {
+public class SelectWorker implements CommandDelegator {
     @Override
-    protected void executeOperation() {
+    public void executeOperation() {
 
     }
 
     @Override
-    protected boolean performUndo() {
+    public boolean performUndo() {
         return false;
     }
 
     @Override
-    protected boolean performRedo() {
+    public boolean performRedo() {
         return false;
     }
 
     @Override
-    protected boolean performCopy() {
+    public boolean performCopy() {
         return false;
     }
 
     @Override
-    protected boolean performPaste() {
+    public boolean performPaste() {
         return false;
     }
 }
