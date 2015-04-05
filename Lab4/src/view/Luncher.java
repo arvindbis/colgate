@@ -1,5 +1,6 @@
 package view;
 
+import controller.SelectWorker;
 import model.ImagePanel;
 
 import javax.imageio.ImageIO;
@@ -7,6 +8,9 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -17,7 +21,6 @@ public class Luncher extends JFrame {
     private JMenuBar menuBar;
     private JMenu fileMenu;
     private JMenuItem save;
-    private JLabel errorLabel;
     private ImagePanel img;
     private JFileChooser opener,saver;
     JSplitPane containerSeperator,subContainerSeperator;
@@ -54,13 +57,14 @@ public class Luncher extends JFrame {
             }
         });
         containerSeperator = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        containerSeperator.setResizeWeight(0.7);
+        containerSeperator.setResizeWeight(0.6);
         containerSeperator.setEnabled(false);
         containerSeperator.setDividerSize(0);
         containerSeperator.add(imageHolder);
         containerSeperator.add(perspectiveHolder);
         fileMenu.add(save);
         mainFrame.add(containerSeperator);
+
     }
 
     private void savePerspectives(ActionEvent evt) {
@@ -86,16 +90,65 @@ public class Luncher extends JFrame {
                 imageHolder.invalidate();
             }
             try {
-                img = new ImagePanel(ImageIO.read(new File(opener.getSelectedFile().getAbsolutePath())));
+                if(img == null)
+                    img = new ImagePanel(ImageIO.read(new File(opener.getSelectedFile().getAbsolutePath())));
+                else
+                    img.setImg(ImageIO.read(new File(opener.getSelectedFile().getAbsolutePath())));
             } catch (IOException e) {
                 e.printStackTrace();
             }
             img.paintComponent(img.getImg().getGraphics());
+            img.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    System.out.println("pressed");
+                   img.setStart(e.getPoint());
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    int startX = (int) Math.min(img.getStart().getX(),e.getX());
+                    int startY = (int) Math.min(img.getStart().getY(),e.getY());
+                    int width =  ((int) Math.max(img.getStart().getX(),e.getX())- startX);
+                    int height = ((int) Math.max(img.getStart().getY(),e.getY())- startY);
+                    perspectiveHolder.add(new ImagePanel(img.getImg().getSubimage(startX,startY,width,height)));
+                    perspectiveHolder.repaint();
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+
+            });
+           /* img.addMouseMotionListener(new MouseMotionListener() {
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                    System.out.println("Dragged");
+                }
+
+                @Override
+                public void mouseMoved(MouseEvent e) {
+                    System.out.println("Moved");
+                }
+            });*/
             imageHolder.add(img);
             imageHolder.validate();
             imageHolder.repaint();
         } else {
-            JOptionPane.showMessageDialog(imageHolder, "This is not a valid Image File", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(imageHolder, "This is not a valid Image File Format", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
