@@ -1,16 +1,13 @@
 package view;
 
-import controller.SelectWorker;
 import model.ImagePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -58,10 +55,12 @@ public class Luncher extends JFrame {
         });
         containerSeperator = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         containerSeperator.setResizeWeight(0.6);
-        containerSeperator.setEnabled(false);
+        containerSeperator.setEnabled(true);
         containerSeperator.setDividerSize(0);
         containerSeperator.add(imageHolder);
         containerSeperator.add(perspectiveHolder);
+        subContainerSeperator = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        subContainerSeperator.setResizeWeight(.5);
         fileMenu.add(save);
         mainFrame.add(containerSeperator);
 
@@ -117,9 +116,10 @@ public class Luncher extends JFrame {
                     int startY = (int) Math.min(img.getStart().getY(),e.getY());
                     int width =  ((int) Math.max(img.getStart().getX(),e.getX())- startX);
                     int height = ((int) Math.max(img.getStart().getY(),e.getY())- startY);
+                    if(perspectiveHolder.getComponentCount() > 0)
+                        System.out.println(perspectiveHolder.getComponentCount());
                     perspectiveHolder.add(new ImagePanel(img.getImg().getSubimage(startX,startY,width,height)));
                     perspectiveHolder.repaint();
-
                 }
 
                 @Override

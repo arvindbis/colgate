@@ -1,10 +1,8 @@
 package controller;
 
 
-public interface CommandDelegator {
+import java.awt.event.MouseAdapter;
+
+public interface CommandDelegator{
     void executeOperation();
-    boolean performUndo();
-    boolean performRedo();
-    boolean performCopy();
-    boolean performPaste();
 }

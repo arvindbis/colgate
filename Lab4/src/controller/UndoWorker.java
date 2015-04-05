@@ -1,5 +1,9 @@
 package controller;
 
+import model.Perspective;
+
+import java.util.ArrayList;
+
 /**
  * Singleton Undo operation
  */
@@ -10,7 +14,10 @@ public class UndoWorker implements CommandDelegator {
         return ourInstance;
     }
 
+    private ArrayList<Perspective> events;
+
     private UndoWorker() {
+        events = new ArrayList<Perspective>();
     }
 
     @Override
@@ -18,23 +25,4 @@ public class UndoWorker implements CommandDelegator {
 
     }
 
-    @Override
-    public boolean performUndo() {
-        return false;
-    }
-
-    @Override
-    public boolean performRedo() {
-        return false;
-    }
-
-    @Override
-    public boolean performCopy() {
-        return false;
-    }
-
-    @Override
-    public boolean performPaste() {
-        return false;
-    }
 }
