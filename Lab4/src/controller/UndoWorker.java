@@ -27,7 +27,7 @@ public class UndoWorker implements CommandDelegator {
     }
 
     @Override
-    public void executeOperation(ImagePanel pane) {
+    public void executeOperation(Perspective pane) {
          events.pop();
         System.out.println("did undo");
     }

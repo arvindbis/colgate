@@ -2,8 +2,10 @@ package controller;
 
 
 import model.ImagePanel;
+import model.Perspective;
+
 import java.util.Observer;
 
 public interface CommandDelegator extends Observer{
-    void executeOperation(ImagePanel pane);
+    void executeOperation(Perspective pane);
 }

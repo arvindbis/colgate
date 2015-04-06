@@ -24,30 +24,6 @@ public class ImagePanel extends JPanel {
         setSize(size);
        setLayout(new FlowLayout());
         addMouseWheelListener(new MouseWheelListener() {
-            /*private Point startPoint;
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                startPoint = e.getPoint();
-                startPoint.x -= start.x;
-                startPoint.y -= start.y;
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                startPoint = null;
-            }
-
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                Point p = e.getPoint();
-                int x = p.x - startPoint.x;
-                int y = p.y - startPoint.x;
-                start = new Point(x, y);
-                repaint();
-                System.out.println("drag");
-
-            }*/
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 double delta = 0.05f * e.getPreciseWheelRotation();
@@ -62,14 +38,9 @@ public class ImagePanel extends JPanel {
             MouseEvent pressed;
             @Override
             public void mouseDragged(MouseEvent e) {
-                /*System.out.println("drag");
+                System.out.println(e.getComponent());
                 e.translatePoint(e.getComponent().getLocation().x, e.getComponent().getLocation().y);
-                ((ImagePanel)e.getSource()).setLocation(e.getX(), e.getY());*/
-                Component component = e.getComponent();
-                location = component.getLocation(location);
-                int x = location.x - pressed.getX() + e.getX();
-                int y = location.y - pressed.getY() + e.getY();
-                component.setLocation(x, y);
+                ((ImagePanel)e.getSource()).setLocation(e.getX(), e.getY());
             }
 
             @Override

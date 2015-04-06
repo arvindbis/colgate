@@ -16,7 +16,8 @@ import java.io.IOException;
 
 
     public class Luncher extends JFrame {
-    private JFrame mainFrame,perspective1, perspective2;
+    private JFrame mainFrame;
+        Perspective perspective1, perspective2;
     private JPanel imageHolder;
     private JMenuBar menuBar;
     private JMenu fileMenu;
@@ -71,7 +72,14 @@ import java.io.IOException;
             saver = new JFileChooser();
             saver.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         }
-        saver.showOpenDialog(null);
+        int selection = saver.showOpenDialog(null);
+        if(selection == JFileChooser.APPROVE_OPTION) {
+            String path = saver.getSelectedFile().getAbsolutePath();
+            perspective1.setSaveLocation(path);
+            perspective2.setSaveLocation(path);
+            perspective1.getSave().executeOperation(perspective1);
+            perspective2.getSave().executeOperation(perspective2);
+        }
     }
 
     private void openPerspectives(ActionEvent evt) {
@@ -132,9 +140,9 @@ import java.io.IOException;
             imageHolder.add(img);
             imageHolder.validate();
             imageHolder.repaint();
-                new Perspective("Perspective 1",new ImagePanel(ImageIO.read(new File(opener.getSelectedFile().getAbsolutePath()))));
+             perspective1 =   new Perspective("Perspective 1",new ImagePanel(ImageIO.read(new File(opener.getSelectedFile().getAbsolutePath()))));
             /*perspective1.setVisible(true);*/
-             new Perspective("Perspective 2",new ImagePanel(ImageIO.read(new File(opener.getSelectedFile().getAbsolutePath()))));
+                perspective2 =new Perspective("Perspective 2",new ImagePanel(ImageIO.read(new File(opener.getSelectedFile().getAbsolutePath()))));
             /*perspective2.setVisible(true);*/
             } catch (IOException e) {
                 e.printStackTrace();
