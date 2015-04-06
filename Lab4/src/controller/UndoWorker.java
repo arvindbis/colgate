@@ -3,8 +3,11 @@ package controller;
 import model.ImagePanel;
 import model.Perspective;
 
+import javax.swing.undo.AbstractUndoableEdit;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Queue;
+import java.util.Stack;
 
 /**
  * Singleton Undo operation
@@ -17,15 +20,16 @@ public class UndoWorker implements CommandDelegator {
         return ourInstance;
     }
 
-    private ArrayList<Perspective> events;
+    private Stack<Perspective> events;
 
     private UndoWorker() {
-        events = new ArrayList<Perspective>();
+        events = new Stack<Perspective>();
     }
 
     @Override
     public void executeOperation(ImagePanel pane) {
-
+         events.pop();
+        System.out.println("did undo");
     }
 
     @Override

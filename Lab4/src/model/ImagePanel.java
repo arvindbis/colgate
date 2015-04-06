@@ -2,8 +2,7 @@ package model;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseWheelEvent;
+import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -15,6 +14,7 @@ public class ImagePanel extends JPanel {
     private float scale = 1;
 
 
+
     public ImagePanel( BufferedImage img){
         this.setImg(img);
         size = new Dimension(img.getWidth(), img.getHeight());
@@ -23,11 +23,33 @@ public class ImagePanel extends JPanel {
        setMaximumSize(size);
         setSize(size);
        setLayout(new FlowLayout());
-        addMouseWheelListener(new MouseAdapter() {
+        addMouseWheelListener(new MouseWheelListener() {
+            /*private Point startPoint;
 
             @Override
+            public void mousePressed(MouseEvent e) {
+                startPoint = e.getPoint();
+                startPoint.x -= start.x;
+                startPoint.y -= start.y;
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                startPoint = null;
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                Point p = e.getPoint();
+                int x = p.x - startPoint.x;
+                int y = p.y - startPoint.x;
+                start = new Point(x, y);
+                repaint();
+                System.out.println("drag");
+
+            }*/
+            @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                System.out.println("ImagePanel");
                 double delta = 0.05f * e.getPreciseWheelRotation();
                 scale += delta;
                 revalidate();
@@ -35,7 +57,26 @@ public class ImagePanel extends JPanel {
             }
 
         });
+        addMouseMotionListener(new MouseMotionListener() {
+            Point location;
+            MouseEvent pressed;
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                /*System.out.println("drag");
+                e.translatePoint(e.getComponent().getLocation().x, e.getComponent().getLocation().y);
+                ((ImagePanel)e.getSource()).setLocation(e.getX(), e.getY());*/
+                Component component = e.getComponent();
+                location = component.getLocation(location);
+                int x = location.x - pressed.getX() + e.getX();
+                int y = location.y - pressed.getY() + e.getY();
+                component.setLocation(x, y);
+            }
 
+            @Override
+            public void mouseMoved(MouseEvent e) {
+
+            }
+        });
     }
 
     @Override

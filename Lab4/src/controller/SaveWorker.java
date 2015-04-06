@@ -11,6 +11,7 @@ public class SaveWorker implements CommandDelegator, Serializable {
 
     @Override
     public void executeOperation(ImagePanel pane) {
+        System.out.println("saved");
 
     }
 
