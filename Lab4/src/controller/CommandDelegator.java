@@ -1,8 +1,9 @@
 package controller;
 
 
-import java.awt.event.MouseAdapter;
+import model.ImagePanel;
+import java.util.Observer;
 
-public interface CommandDelegator{
-    void executeOperation();
+public interface CommandDelegator extends Observer{
+    void executeOperation(ImagePanel pane);
 }

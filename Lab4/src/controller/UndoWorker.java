@@ -1,12 +1,15 @@
 package controller;
 
+import model.ImagePanel;
 import model.Perspective;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * Singleton Undo operation
  */
+
 public class UndoWorker implements CommandDelegator {
     private static UndoWorker ourInstance = new UndoWorker();
 
@@ -21,8 +24,12 @@ public class UndoWorker implements CommandDelegator {
     }
 
     @Override
-    public void executeOperation() {
+    public void executeOperation(ImagePanel pane) {
 
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }

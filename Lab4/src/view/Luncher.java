@@ -1,68 +1,68 @@
 package view;
 
 import model.ImagePanel;
+import model.Perspective;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 import java.io.File;
 import java.io.IOException;
 
 
-public class Luncher extends JFrame {
-    private JFrame mainFrame;
-    private JPanel perspectiveHolder, imageHolder;
+    public class Luncher extends JFrame {
+    private JFrame mainFrame,perspective1, perspective2;
+    private JPanel imageHolder;
     private JMenuBar menuBar;
     private JMenu fileMenu;
     private JMenuItem save;
     private ImagePanel img;
     private JFileChooser opener,saver;
-    JSplitPane containerSeperator,subContainerSeperator;
 
     public Luncher(String name) {
         initalizeView(name);
     }
 
+
+
     private void initalizeView(String name) {
+
         mainFrame = new JFrame();
         mainFrame.setTitle(name);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
         mainFrame.setSize(800, 600);
         mainFrame.setLocationRelativeTo(null);
-        perspectiveHolder = new JPanel();
-        imageHolder = new JPanel();
         menuBar = new JMenuBar();
         fileMenu = new JMenu("File");
-        menuBar.add(fileMenu);
         mainFrame.setJMenuBar(menuBar);
-        save = new JMenuItem("Open");
-        save.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openPerspectives(e);
-            }
-        });
-        fileMenu.add(save);
+        menuBar.add(fileMenu);
+            this.imageHolder = new JPanel();
+            save = new JMenuItem("Open");
+            fileMenu.add(save);
+            save.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    openPerspectives(e);
+                }
+            });
+
+
         save = new JMenuItem("Save");
+        fileMenu.add(save);
         save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 savePerspectives(evt);
             }
         });
-        containerSeperator = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        containerSeperator.setResizeWeight(0.6);
-        containerSeperator.setEnabled(true);
-        containerSeperator.setDividerSize(0);
-        containerSeperator.add(imageHolder);
-        containerSeperator.add(perspectiveHolder);
-        subContainerSeperator = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        subContainerSeperator.setResizeWeight(.5);
+
         fileMenu.add(save);
-        mainFrame.add(containerSeperator);
+        mainFrame.add(this.imageHolder);
 
     }
 
@@ -93,10 +93,8 @@ public class Luncher extends JFrame {
                     img = new ImagePanel(ImageIO.read(new File(opener.getSelectedFile().getAbsolutePath())));
                 else
                     img.setImg(ImageIO.read(new File(opener.getSelectedFile().getAbsolutePath())));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            img.paintComponent(img.getImg().getGraphics());
+
+           /* img.paintComponent(img.getImg().getGraphics());*/
             img.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -106,20 +104,17 @@ public class Luncher extends JFrame {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     System.out.println("pressed");
-                   img.setStart(e.getPoint());
+                    img.setStart(e.getPoint());
 
                 }
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    int startX = (int) Math.min(img.getStart().getX(),e.getX());
-                    int startY = (int) Math.min(img.getStart().getY(),e.getY());
-                    int width =  ((int) Math.max(img.getStart().getX(),e.getX())- startX);
-                    int height = ((int) Math.max(img.getStart().getY(),e.getY())- startY);
-                    if(perspectiveHolder.getComponentCount() > 0)
-                        System.out.println(perspectiveHolder.getComponentCount());
-                    perspectiveHolder.add(new ImagePanel(img.getImg().getSubimage(startX,startY,width,height)));
-                    perspectiveHolder.repaint();
+                    int startX = (int) Math.min(img.getStart().getX(), e.getX());
+                    int startY = (int) Math.min(img.getStart().getY(), e.getY());
+                    int width = ((int) Math.max(img.getStart().getX(), e.getX()) - startX);
+                    int height = ((int) Math.max(img.getStart().getY(), e.getY()) - startY);
+
                 }
 
                 @Override
@@ -133,20 +128,17 @@ public class Luncher extends JFrame {
                 }
 
             });
-           /* img.addMouseMotionListener(new MouseMotionListener() {
-                @Override
-                public void mouseDragged(MouseEvent e) {
-                    System.out.println("Dragged");
-                }
 
-                @Override
-                public void mouseMoved(MouseEvent e) {
-                    System.out.println("Moved");
-                }
-            });*/
             imageHolder.add(img);
             imageHolder.validate();
             imageHolder.repaint();
+                new Perspective("Perspective 1",new ImagePanel(ImageIO.read(new File(opener.getSelectedFile().getAbsolutePath()))));
+            /*perspective1.setVisible(true);*/
+             new Perspective("Perspective 2",new ImagePanel(ImageIO.read(new File(opener.getSelectedFile().getAbsolutePath()))));
+            /*perspective2.setVisible(true);*/
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             JOptionPane.showMessageDialog(imageHolder, "This is not a valid Image File Format", "Error", JOptionPane.ERROR_MESSAGE);
         }
